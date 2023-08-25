@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible"  content="IE=edge">
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+        <style>
+            body{
+                background-color:#0D1137;
+            }
+            #container{
+                width:100%;
+                height:50%;
+                margin-left:60px;
+            }
+            #googleChat{
+                text-align: center;
+                margin-top:10%;
+                margin-bottom:5%;
+            }
+            h1 span:nth-child(1){
+                color:white;
+                display:inline-block;
+                font-size:200%;
+                margin-right:40px;
+                font-weight: 500;
+            }
+            h1 span:nth-child(2){
+                color:#03874F;
+                font-size:200%;
+                font-weight: 500;
+            }
+            #chatImgDiv{
+                width:300px;
+                height:300px;
+                border-radius:50px;
+                background-color:white;
+                cursor:pointer;
+                margin-left:20%;
+                text-align: center;
+                position:relative;
+                float:left;
+            }
+            label p{
+                top:100px;
+                left:27%;
+                font-size: 150%;
+                position:absolute;
+                color:gray;
+            }
+            #chatImgInput{
+                width:300px;
+                height:300px;
+                border-radius: 50%;
+                left:0px;
+                position: absolute;
+                object-fit: cover;
+                opacity: 0;
+            }
+            #info{
+                text-align: center;
+                margin-right:40%;
+                width:300px;
+                float:right;
+                margin-top:30px;
+                
+            }
+            #info label{
+                color:white;
+                font-size:150%;
+                padding-right:50px;
+            }
+            #roomName, #description{
+                width:300px;
+                height:40px;
+                border-radius: 100px;
+            }
+            #roomNameDiv, #descriptionDiv, #submitDiv{
+                width:500px;
+                height:100px;
+            }
+            #submitDiv{
+                text-align: right;
+            }
+            #submit{
+                width:150px;
+                height:40px;
+                border-radius:100px;
+                margin-top:30px;
+                background-color:#FFF73D;
+               
+            }
+        </style>
+    </head>
+    <body>
+      
+            <div id="googleChat">
+                <h1> <span>GOOGLE</span><span>CHAT</span></h1>
+            </div>
+            <div id="container">
+            <form action="/create" method="POST">
+            <div id="chatImgDiv">
+                <label for="chatImg"><p>upload img</p></label>
+                <input type="file" name="chatImgInput" id="chatImgInput"></input>
+            </div>
+            <div id="info">
+                <div id="roomNameDiv">
+                    <label for="roomName">RoomName</label>
+                    <input type="text" id="roomName" name="roomName">
+                </div>
+                <div id="descriptionDiv">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description">
+                </div>
+           
+                <div id="submitDiv">
+                    <input type="submit" id="submit" name="submit" value="submit">
+                </div> 
+            </div>
+            </form>
+        </div>
+    </body>
+</html>
+
