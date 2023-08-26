@@ -86,7 +86,7 @@ passport.use(new LocalStrategy({
 			where: {email:email}
 		});
 		if(user){
-			if(User.passwordComparison(user, password)) {return done(null,user);
+			if(await User.passwordComparison(user, password)) {return done(null,user);
 		}else{
 			//The user information is in DB and entered password is the same from DB
 			return done(null,false, {message: "password is wrong"});

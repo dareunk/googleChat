@@ -1,6 +1,7 @@
 const db = require("../models/index"),
 	User = db.user,
-	ChatRoom = db.chatroom;
+	ChatRoom = db.chatroom,
+	Chat = db.chat;
 const {validationResult} = require("express-validator");
 const getUserParams = body => {
 	return {
@@ -94,9 +95,12 @@ module.exports = {
 			next();
 		}
 	},
-	chat: (req,res) => {
+	chat: async(req,res) => {
 		let chatRoomId = req.params.id;
 		console.log(`${chatRoomId}`);
+		let previousChat = await Chat.findAll({where: {chatRoomNum : chatRoomId}});
+		console.log(previousChat);
+		res.locals.chatcontents = previousChat;
 		res.locals.chatroomid = chatRoomId;
 		res.render("chat");
 	}

@@ -64,6 +64,12 @@
                 margin-top:10px;
                 margin-bottom:10px;
             }
+	    #popWho{
+	    	
+		height:auto;
+		color:#03874F;
+		text-align:center;
+	    }
             #content{
                text-align: left;
                font-size:150%;
@@ -99,8 +105,12 @@
         <div id="container">
 	    <input type="hidden" name="userEmail" id="userEmail" value="<%= currentUser.email %>">
 	    <input type="hidden" name="roomId" id="roomId" value="<%= chatroomid %>">
+	    
 	    <div id="chat">
-		    
+		    <% if(chatcontents) {%>
+		   <% chatcontents.forEach(chatcontent => { %>
+		    <div id="chatBox"><%= chatcontent.content %></div>
+		    <% })}; %>
 	    </div>
                 <div id="chatForm">
 		   
@@ -120,7 +130,7 @@
 				socket.emit("newUser",userName);
 			});
 			socket.on("pop", (msg) => {
-				$("#chat").prepend(`<div id="chatBox">${msg}</div>`);
+				$("#chat").prepend(`<div id="popWho">${msg}</div>`);
 			});
 			$("#sendChat").click(()=>{
 				let content = $("#inputChat").val();
