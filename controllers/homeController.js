@@ -62,9 +62,11 @@ module.exports = {
 		}
 	},
 	logInView: (req,res) => {
-		res.render("logIn");
+		res.render("localLogin");
 	},
 	chatRoom: async(req,res) => {
+		console.log(req.user);
+		console.log(req.isAuthenticated());
 		if(req.isAuthenticated()){
 			const chatRooms = await ChatRoom.findAll();
 			res.locals.chatrooms = chatRooms;

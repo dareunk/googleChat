@@ -104,6 +104,7 @@
     <body>
         <div id="container">
 	    <input type="hidden" name="userEmail" id="userEmail" value="<%= currentUser.email %>">
+	    <input type="hidden" name="userName" id="userName" value="<%= currentUser.displayName %>">
 	    <input type="hidden" name="roomId" id="roomId" value="<%= chatroomid %>">
 	    
 	    <div id="chat">
@@ -126,8 +127,9 @@
 		$(() => {
 			const socket = io();
 			socket.on("connect", () => {
-				let userName = $("#userEmail").val();
-				socket.emit("newUser",userName);
+				let userEmail = $("#userEmail").val();
+				let userName = $("#userName").val();
+				socket.emit("newUser",userEmail, userName);
 			});
 			socket.on("pop", (msg) => {
 				$("#chat").prepend(`<div id="popWho">${msg}</div>`);

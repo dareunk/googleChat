@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible"  content="IE=edge">
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+        <style>
+             body{
+                background-color: #0D1137;
+            }
+            #google{
+                color: white;
+                text-align: center;
+                font-size:450%;
+                margin-top:15%;
+                margin-bottom:0px;
+                font-weight: 500;
+
+            }
+            #chat{
+                color: #03874F;
+                text-align:center;
+                font-size:450%;
+                margin-top:0px;
+                font-weight: 500;
+            }
+            label{
+                color:white;
+                font-size:150%;
+                padding-right:10px;
+            }
+           #inputInfo{
+              text-align:right;
+              margin-right:40%;
+           }
+           #inputInfo div{
+                
+                margin-top:5px;
+           }
+           #email, #password{
+                width:350px;
+                height:50px;
+                border-radius:100px;
+                text-align:left;
+           }
+           #submitDiv input{
+                width:100px;
+                height:40px;
+                border-radius:100px;
+
+           }
+	   p{
+		color:white;
+	   }
+        </style>
+    </head>
+    <body>
+        <h1 id="google">GOOGLE</h1>
+        <h1 id="chat">CHAT</h1>
+        <div id="inputInfo">
+	<div id="error">
+	<% if(flashMessages) { %>
+	<% if(flashMessages.error) { %>
+		<p><%= flashMessages.error %></p>
+	<% }} %>
+	</div>
+	<form action="/login/local" method="POST">
+        <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email">
+        </div>
+        <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+        </div>
+        <div id="submitDiv">
+        <input type="submit" id="submit" name="submit" value="submit">
+        </div>
+	</form>
+        </div>
+    </body>
+    </html>
+

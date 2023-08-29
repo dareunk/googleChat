@@ -17,7 +17,12 @@ const http = require("http"),
 	server = http.createServer(app),
 	socket = require("socket.io"),
 	io = socket(server);
-//connect to DB with sequelize  
+require("dotenv").config();
+//connect to DB with sequelize
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const clientID = process.env.GOOGLE_CLIENT_ID,
+	clientSecret = process.env.GOOGLE_CLIENT_SECRET,
+	clientRedirectUrl = process.env.GOOGLE_REDIRECT_URL
 db.sequelize.sync();
 
 app.set("views", "./views");
@@ -30,7 +35,7 @@ app.use(expressSession({
 		maxAge:4000000
 	},
 	resave:false,
-	saveUninitialized:false
+	saveUninitialized:true
 }));
 app.use(connectFlash());
 app.use(
@@ -42,12 +47,14 @@ app.use(
 app.use(express.json());
 io.on("connection", (socket) => {
 	console.log("new connection");
-	socket.on("newUser", async(email) => {
-		console.log(email);
-		let user = await User.findByPk(email);
-		let userName = user.fullName;
-		console.log(userName);
-		socket.email = email;
+	socket.on("newUser", async(userEmail, userName) => {
+	//	console.log(userEmail);
+		
+		//let user = await User.findByPk(email);
+		
+
+	//	console.log(userName);
+		socket.email = userEmail;
 		socket.name = userName;
 		let msg = "hi! " + socket.name;
 		//	console.log(`name: ${name}`);
@@ -96,20 +103,31 @@ passport.use(new LocalStrategy({
 		return done(error);
 	}
 }));
+passport.use(new GoogleStrategy({
+	clientID: clientID,
+	clientSecret: clientSecret,
+	callbackURL: clientRedirectUrl,
+	passReqToCallback: true,
+}, async function(request, accessToken, refreshToken, profile, done) {
+	console.log(profile);
+//	console.log(accessToken);
+	return done(null, profile);
+}));
 passport.serializeUser(function(user,done){
-	done(null,user.email);
-});
-passport.deserializeUser( async function(email, done){
-	const user = await User.findOne({
-		where: { email:email}
-	});
 	done(null,user);
 });
+passport.deserializeUser( async function(user, done){
+	//const user = await User.findOne({
+	//	where: { email:email}
+	//});
+	done(null,user);
+});
+
 app.use(async(req,res,next) => {
 	res.locals.loggedIn = await req.isAuthenticated();
 	res.locals.currentUser = await req.user;
 	res.locals.flashMessages = req.flash();
-	next()
+	next();
 });
 
 
@@ -124,12 +142,20 @@ app.post("/signup",
 	check("email","email is invalid").isEmail(),
 	check("password", "password must be enterd").notEmpty(),
 	],homeController.validate, homeController.signUp, homeController.redirectView);
-app.get("/login", homeController.logInView);
-app.post("/login", passport.authenticate("local", {
-			failureRedirect: "/login",
+app.get("/login", (req,res) => {res.render("login")});
+app.get("/login/local", homeController.logInView);
+app.post("/login/local", passport.authenticate("local", {
+			failureRedirect: "/login/local",
 			successRedirect: "/chatrooms",
 			failureFlash: true
 }));
+app.get("/login/google", passport.authenticate("google", {scope: ["email", "profile"]}));
+app.get("/login/google/callback", passport.authenticate("google", {
+			failureRedirect: "/login/google",
+			successRedirect: "/chatrooms",
+			failureFlash:true
+}));
+
 app.get("/create", homeController.createChatRoom);
 app.post("/create", homeController.create, homeController.redirectView);
 app.get("/chatrooms", homeController.chatRoom);
