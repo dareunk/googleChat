@@ -1,7 +1,8 @@
 const port = 3000,
 	express = require("express"),
 	app = express();
-const homeController = require("./controllers/homeController");
+const homeController = require("./controllers/homeController"),
+	authController = require("./controllers/authController");
 const passport = require("passport");
 const cors = require("cors");
 const { check, sanitizeBody } = require("express-validator"),
@@ -22,11 +23,50 @@ require("dotenv").config();
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const clientID = process.env.GOOGLE_CLIENT_ID,
 	clientSecret = process.env.GOOGLE_CLIENT_SECRET,
-	clientRedirectUrl = process.env.GOOGLE_REDIRECT_URL
+	clientRedirectUrl = process.env.GOOGLE_REDIRECT_URL;
+//const memoryStore = require("memoryStore")(session);
+/*
+const nodeMailer = require("nodemailer");
+
+var generateRandomString = function(length) {
+	  var text = '';
+	  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	  for (var i = 0; i < length; i++) {
+		      text += possible.charAt(Math.floor(Math.random() * possible.length));
+		    }
+	  return text;
+};
+
+const send = async(email) => {
+	const transporter = nodeMailer.createTransport({
+		service: "google",
+		host: "smtp.google.com",
+		port: port,
+		auth: {
+			user: process.env.SENDER,
+			pass: process.env.PASSWORD
+		}
+	});
+	var number = generateRandomString(6);
+	var text = `[Authentication code] + ${number}`;
+	console.log(text);
+	const option = {
+		from: process.env.SENDER,
+		to: email,
+		subject: "authentication code",
+		text:text
+	};
+	const info = await transporter.sendMail(option);
+	return info;
+};
+*/
+
 db.sequelize.sync();
 
 app.set("views", "./views");
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(cors());
 app.use(cookieParser("secret_password"));
 app.use(expressSession({
@@ -36,6 +76,7 @@ app.use(expressSession({
 	},
 	resave:false,
 	saveUninitialized:true
+
 }));
 app.use(connectFlash());
 app.use(
@@ -136,12 +177,9 @@ app.get("/", (req,res) => { res.render("index")});
 app.get("/signup", homeController.signUpView);
 app.post("/signup", 
 	[
-	sanitizeBody("email").normalizeEmail({
-		all_lowercase:true
-	}).trim(),
-	check("email","email is invalid").isEmail(),
 	check("password", "password must be enterd").notEmpty(),
-	],homeController.validate, homeController.signUp, homeController.redirectView);
+	],homeController.signUp, homeController.redirectView);
+app.post("/sendCode", authController.sendMessage);
 app.get("/login", (req,res) => {res.render("login")});
 app.get("/login/local", homeController.logInView);
 app.post("/login/local", passport.authenticate("local", {
@@ -160,6 +198,9 @@ app.get("/create", homeController.createChatRoom);
 app.post("/create", homeController.create, homeController.redirectView);
 app.get("/chatrooms", homeController.chatRoom);
 app.get("/chat/:id", homeController.chat);
+app.get("/find/id", (req,res) => {res.render("findId")});
+app.post("/find/id", homeController.findId, homeController.redirectView);
+app.get("/resultFind", homeController.resultFind);
 server.listen(port);
 console.log(`The server has started and is listening on the port number: ${port}`);
 

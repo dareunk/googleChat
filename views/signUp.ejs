@@ -49,7 +49,7 @@
             }
             #inputInfo{
                 text-align: right;
-                margin-right:30%;
+                margin-right:25%;
             }
             #inputInfo div{
                 margin-top:2px;
@@ -60,7 +60,7 @@
                 padding-right:50px;
             }
          
-            #firstName, #lastName, #email, #phone, #password, #re-password{
+            #firstName, #lastName, #code, #email, #phone, #password, #re-password{
                 width:300px;
                 height:40px;
                 border-radius: 100px;
@@ -78,9 +78,22 @@
 		margin-right:30%;
 	    }
 
-      
+     
+  	    #email{
+		    position:relative;
+	    }
+	    #getCode{
+		    width:100px;
+		    height:40px;
+		    border-radius:100px;
+		    background-color:#FFF73D;
+		    position:absolute;
+		    margin-top:-40px;
+		   }
+
+
         </style>
-    </head>
+	 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
     <body>
 	    <div id="container">
 	    <div id="error">
@@ -90,13 +103,23 @@
 		    <% }} %>
 
 	    </div>
-            <form action = "/signup" method="POST">
-             <div id="profileDiv">
-            <label for="profile" id="profile">
-               <p> upload profile</p> 
-            </label>
-            <input type="file" name="profileInput" id="profileInput"></input>
-            </div>
+	    <div id="profileDiv">
+	    <label for="profile" id="profile">
+		    <p> upload profile</p>
+	    </label>
+	    <input type="file" name="profileInput" id="profileInput"></input>
+	    </div>
+
+	     <form action="/sendCode" method="POST">
+			<div>
+			<label for="inputemail">Email</label>
+			<input type="email" name="inputemail" id="inputemail">
+			</div>
+		
+			<input type="submit" name="getCode" id="getCode" value="send code" onclick="javascript:form.action='/sendCode';"/>
+		
+            
+	    
             <div id="inputInfo">
             <div>
             <label for="firstName">firstName</label>
@@ -107,22 +130,21 @@
             <input type="text" name="lastName" id="lastName">
 	    </div>
 	    <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email"> 
-            </div>
+            <label for="code">Code</label>
+            <input type="text" name="code" id="code">
+	    </div>
+	    <input type="submit" name="submit" id="submit" value="confirm" onclick="javascript:form.action='/confirm';"/>
+
 	    <div>
             <label for="phone">Phone</label>
             <input type="text" name="phone" id="phone">
-	    </div>
+            </div>
             <div>
             <label for="password">Password</label>
             <input type="password" name="password" id="password">
             </div>
-            <div>
-            <input type="password" name="re-password" id="re-password">
-            </div>
             <div id="submitDiv">
-            <input type="submit" name="submit" id="submit" value="send">
+            <input type="submit" name="submit" id="submit" value="send" onclick="javascript:form.action='/signup';" />
             </div>
 	    </div>
             </form>

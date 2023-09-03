@@ -2,12 +2,13 @@ const db = require("../models/index"),
 	User = db.user,
 	ChatRoom = db.chatroom,
 	Chat = db.chat;
+const store= require("store");
 const {validationResult} = require("express-validator");
-const getUserParams = body => {
+const getUserParams = (body,email) => {
 	return {
 		firstName: body.firstName,
 		lastName:body.lastName,
-		email:body.email,
+		email:body.inputemail,
 		phone:body.phone,
 		password: body.password,
 		profile: body.profileInput
@@ -32,6 +33,9 @@ module.exports = {
 	},
 
 	signUp: async(req,res,next) => {
+
+		let code = req.session.code;
+		console.log(code);
 		let userParams = await getUserParams(req.body);
 		try{
 			console.log(userParams);
@@ -47,6 +51,7 @@ module.exports = {
 					next(error);
 				}
 			});
+
 		}catch(error){
 			console.log(`Error saving user's information: ${error.message}`);
 			next(error);
@@ -62,6 +67,8 @@ module.exports = {
 		}
 	},
 	logInView: (req,res) => {
+		let code = store.get("code");
+		console.log(code);
 		res.render("localLogin");
 	},
 	chatRoom: async(req,res) => {
@@ -80,6 +87,8 @@ module.exports = {
 	},
 	create: async(req,res,next)=>{
 		let user = res.locals.currentUser;
+		let code = res.locals.code;
+		console.log(code);
 		console.log(`user: ${user}`);
 		try{
 			await ChatRoom.create({
@@ -105,7 +114,30 @@ module.exports = {
 		res.locals.chatcontents = previousChat;
 		res.locals.chatroomid = chatRoomId;
 		res.render("chat");
+	},
+	findId: async(req,res,next) => {
+		//console.log(req.body.firstName);
+		//console.log(req.body.lastName);
+		//console.log(req.body.phone);
+	
+		let user = await User.findOne({ where: {
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
+			phone: req.body.phone
+		}});
+		console.log(user);
+		if(user===null){ 
+			req.flash("error","Can't find a user. Plese recheck your information you put or sign in");
+		}
+		else{
+			req.flash("success",`${user.email}`);
+		}
+		//console.log(user);
+		res.locals.redirect = "/resultFind";
+		next();
+	},
+	resultFind: (req,res) => {
+		res.render("resultFindId");
 	}
-
 	
 };

@@ -1,0 +1,113 @@
+
+body{
+	 background-color: #0D1137;
+ }
+ #googleChat{
+	 text-align: center;
+	  margin-top:10%;
+	  margin-bottom:0px;
+  }
+  h1 span:nth-child(1){
+	  color:white;
+	  display:inline-block;
+	  font-size:200%;
+	  margin-right:40px;
+	  font-weight: 500;
+  }
+  h1 span:nth-child(2){
+	  color:#03874F;
+	  font-size:200%;
+	  font-weight: 500;
+  }
+  label{
+	  color:white;
+	  font-size:200%;
+	  padding-right:100px;
+  }
+  p{
+	  text-align:center;
+  }
+  #container{
+	                 
+	  width:1000px;
+	  height:600px;
+	  margin:auto;
+	  position:relative;
+  }
+   #options{
+	   width:1000px;
+	   height:100px;
+	   position:absolute;
+	   margin-bottom:0px;
+	                 
+   }
+   #contents{
+	   position:absolute;
+	   width:996px;
+	   height: 380px;
+	   margin-top:80px;
+	   text-align: right;
+	   border:1px solid white;
+	   border-radius:0px 0px 50px 50px;
+	   border-top:none;
+	                
+   }
+   #id{
+	   background-color: #FFF73D;;
+	   width:50%;
+	   height:80px;
+	   float:left;
+	   border-radius: 50px 0px 0px 0px;
+	                   
+   }
+   #password{
+	   background-color: #505050;
+	   width:50%;
+	   height:80px;
+	   float:right;
+	   border-radius: 0px 50px 0px 0px;
+   }
+   #contents #box{
+	   padding-top:40px;
+	                  
+   }
+   #box div{
+	    margin-top:30px;
+	    margin-bottom:0px;
+	     margin-right:170px;
+	                 }
+#firstName, #lastName, #phone{
+	 height:40px;
+	width:350px;
+	 border-radius:100px;
+ }
+a{
+text-decoration-line: none;
+}
+ p{
+	color:black;
+	font-size:200%;
+	font-weight: bold;
+	margin-top:3%;
+ }
+#submit{
+	width:150px;
+	 height:40px;
+	border-radius:100px;
+	margin-top:30px;
+	margin-right:50px;
+				                     
+}
+#result{
+	margin-top:10%;
+}
+#result p{
+	color: white;
+	font-size:200%;
+}
+#return a{
+	color: #FFF73D;
+	font-size:150%;
+	margin-right:50px;
+}
+
