@@ -47,20 +47,21 @@
                 object-fit: cover;
                 opacity: 0;
             }
-            #inputInfo{
+            #inputInfo, #inputemailDiv, #codeDiv{
                 text-align: right;
-                margin-right:25%;
+                margin-right:20%;
+		margin-top:5px;
             }
             #inputInfo div{
-                margin-top:2px;
+                margin-top:5px;
             }
-            #inputInfo  label{
+            label{
                 color:white;
                 font-size:150%;
                 padding-right:50px;
             }
          
-            #firstName, #lastName, #code, #email, #phone, #password, #re-password{
+            #firstName, #lastName, #code, #inputemail, #phone, #password, #re-password{
                 width:300px;
                 height:40px;
                 border-radius: 100px;
@@ -72,34 +73,47 @@
                 margin-top:30px;
 
             }
-	    #error p{
+	    #error p, #auth p{ 
 	    	color:red;
 		text-align:right;
-		margin-right:30%;
+		margin-right:20%;
 	    }
-
      
-  	    #email{
-		    position:relative;
-	    }
-	    #getCode{
+  	    #getCode, #confirm{
 		    width:100px;
 		    height:40px;
 		    border-radius:100px;
 		    background-color:#FFF73D;
-		    position:absolute;
 		    margin-top:-40px;
-		   }
+	            float:right;
+		    margin-right:10%;
+	    }
 
 
         </style>
 	 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			let authentication = $("#authentication").val();
+			if(authentication == "true"){
+		//	let email = req.session.inputEmail;
+			$("#inputemail").prop("value", "The validation of your email successed");
+		//	$("#inputemail").prop("value","test");
+			$("#inputemail").prop("readOnly",true);
+			//$("#code").prop("readOnly", true);
+			$("#code").prop("value", "authentication completed");
+			$("#code").prop("readOnly", true);
+			}
+		});
+	</script>
+	</head>
     <body>
 	    <div id="container">
+		    <input type="hidden" name="authentication" id="authentication" value="<%= authentication %>">
 	    <div id="error">
 		    <% if(flashMessages){ %>
 		    <% if(flashMessages.error){ %>
-		    <p><%= flashMessages.error %> 
+		    <p><%= flashMessages.error %></p> 
 		    <% }} %>
 
 	    </div>
@@ -110,16 +124,27 @@
 	    <input type="file" name="profileInput" id="profileInput"></input>
 	    </div>
 
-	     <form action="/sendCode" method="POST">
-			<div>
+	     <form method="POST">
+			<div id="inputemailDiv">
 			<label for="inputemail">Email</label>
 			<input type="email" name="inputemail" id="inputemail">
 			</div>
 		
 			<input type="submit" name="getCode" id="getCode" value="send code" onclick="javascript:form.action='/sendCode';"/>
 		
-            
-	    
+			<div id="codeDiv">
+			<label for="code">Code</label>
+			<input type="text" name="code" id="code">
+			</div>
+			<input type="submit" name="confirm" id="confirm" value="confirm" onclick="javascript:form.action='/confirm';"/>
+			
+			
+			 
+			<div id="auth">
+				<% if(flashMessages.match) { %><p> <%= flashMessages.match %></p> <% }; %>
+			</div>
+		
+												         	    
             <div id="inputInfo">
             <div>
             <label for="firstName">firstName</label>
@@ -129,12 +154,6 @@
             <label for="lastName">lastName</label>
             <input type="text" name="lastName" id="lastName">
 	    </div>
-	    <div>
-            <label for="code">Code</label>
-            <input type="text" name="code" id="code">
-	    </div>
-	    <input type="submit" name="submit" id="submit" value="confirm" onclick="javascript:form.action='/confirm';"/>
-
 	    <div>
             <label for="phone">Phone</label>
             <input type="text" name="phone" id="phone">

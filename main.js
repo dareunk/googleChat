@@ -176,10 +176,12 @@ app.use(async(req,res,next) => {
 app.get("/", (req,res) => { res.render("index")});
 app.get("/signup", homeController.signUpView);
 app.post("/signup", 
-	[
+	[ //sanitizeBody("email").normalizeEmail({all_lowercase:true}).trim(),
+	//	check("email", "email is invalid").isEmail(),
 	check("password", "password must be enterd").notEmpty(),
-	],homeController.signUp, homeController.redirectView);
+	],homeController.validate,homeController.signUp, homeController.redirectView);
 app.post("/sendCode", authController.sendMessage);
+app.post("/confirm", authController.matchCode, authController.signUpAfterAuth, homeController.redirectView);
 app.get("/login", (req,res) => {res.render("login")});
 app.get("/login/local", homeController.logInView);
 app.post("/login/local", passport.authenticate("local", {
@@ -200,6 +202,9 @@ app.get("/chatrooms", homeController.chatRoom);
 app.get("/chat/:id", homeController.chat);
 app.get("/find/id", (req,res) => {res.render("findId")});
 app.post("/find/id", homeController.findId, homeController.redirectView);
+app.get("/find/pw", (req,res) => {res.render("findPw")});
+app.post("/find/pw", authController.matchCode, authController.findPw, homeController.redirectView);
+app.get("/setpw", authController.setPwView);
 app.get("/resultFind", homeController.resultFind);
 server.listen(port);
 console.log(`The server has started and is listening on the port number: ${port}`);

@@ -4,11 +4,11 @@ const db = require("../models/index"),
 	Chat = db.chat;
 const store= require("store");
 const {validationResult} = require("express-validator");
-const getUserParams = (body,email) => {
+const getUserParams = (body, validEmail) => {
 	return {
 		firstName: body.firstName,
 		lastName:body.lastName,
-		email:body.inputemail,
+		email:validEmail,
 		phone:body.phone,
 		password: body.password,
 		profile: body.profileInput
@@ -29,14 +29,20 @@ module.exports = {
 		}
 	},
 	signUpView: (req,res) => {
+		res.locals.authentication = false;
 		res.render("signUp");
 	},
 
 	signUp: async(req,res,next) => {
-
+		
 		let code = req.session.code;
+		let validEmail = req.session.inputEmail;
+		let checkAuthentication = req.session.auth;
 		console.log(code);
-		let userParams = await getUserParams(req.body);
+		console.log(checkAuthentication);
+		console.log(`validEmail:${validEmail}`);
+		if(checkAuthentication){
+		let userParams = await getUserParams(req.body, validEmail);
 		try{
 			console.log(userParams);
 			let user = new User(userParams);
@@ -47,7 +53,7 @@ module.exports = {
 					next();
 				}else{
 					console.log(`Error while a user signing up: ${error.message}`);
-					res.locals.redirect="/singup";
+					res.locals.redirect="/signup";
 					next(error);
 				}
 			});
@@ -55,6 +61,11 @@ module.exports = {
 		}catch(error){
 			console.log(`Error saving user's information: ${error.message}`);
 			next(error);
+		}
+		}else{
+			req.flash("error", "Send a code first and then confirm it");
+			res.locals.redirect = "/signup";
+			next();
 		}
 	},
 	redirectView: (req,res) => {
@@ -131,6 +142,7 @@ module.exports = {
 		}
 		else{
 			req.flash("success",`${user.email}`);
+			
 		}
 		//console.log(user);
 		res.locals.redirect = "/resultFind";

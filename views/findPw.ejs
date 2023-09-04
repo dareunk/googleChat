@@ -14,35 +14,34 @@
         <h1> <span>GOOGLE</span><span>CHAT LIST</span></h1>
     </div>
     <div id="container">
-    
+
         <div id="options">
             <div id="id"><a href="/find/id"><p>Email</p></a></div>
             <div id="password"><a href="/find/pw"><p>Password</p></a></div>
         </div>
         <div id="contents">
-	<form action="/find/id" method="POST">
+        <form action="/find/id" method="POST">
         <div id="box">
+        <form method="POST">
         <div>
-            <label for="firstName">FirstName</label>
-            <input id="firstName" name="firstName">
+            <label for="inputemail">Email</label>
+            <input id="inputemail" name="inputemail"> 
         </div>
+
+            <input type="submit" name="getCode" id="getCode" onclick="javascript:form.action='/sendCode';" />
+      
         <div>
-            <label for="lastName">LastName</label>
-            <input id="lastName" name="lastName">
+            <label for="code">Code</label>
+            <input id="code" name="code">
         </div>
-        <div>
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone">
-        </div>
+      
     </div>
         <div id="submitDiv">
-        <input type="submit" id="submit" name="submit" value="submit">
+        <input type="submit" id="submit" name="submit" value="submit" onclick="javascript:form.action='/find/pw';">
         </div>
-	</form>
+        </form>
         </div>
     </div>
 </body>
 </html>
-
-
 
