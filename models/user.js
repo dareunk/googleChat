@@ -6,8 +6,21 @@ module.exports = (sequelize, Sequelize) => {
 	class User extends Model {
 		static async passwordComparison(inputuser, inputPassword){
 			let user = inputuser;
-			return bcrypt.compare(inputPassword, user.password);
+			return await bcrypt.compare(inputPassword, user.password);
 		}
+		static async changePassword(email, newPassword){
+			let user = await User.findByPk(email);
+			let hash = await bcrypt.hash(newPassword,10);
+			//The return type from update query is int 
+			if(user){ 
+				user = await User.update({password:hash},{
+					where: { email: email}
+				});
+			};
+			
+			return user;
+		}
+
 
 	};
 	User.init({

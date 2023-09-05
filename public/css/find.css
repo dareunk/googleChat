@@ -76,7 +76,7 @@ body{
 	    margin-bottom:0px;
 	     margin-right:170px;
 	                 }
-#firstName, #lastName, #phone, #inputemail, #code, #pw, #rePw{
+#firstName, #lastName, #phone, #inputemail, #code, #newPw, #rePw{
 	 height:40px;
 	width:350px;
 	 border-radius:100px;
@@ -102,7 +102,7 @@ text-decoration-line: none;
 #result{
 	margin-top:10%;
 }
-#result p{
+#contents p{
 	color: white;
 	font-size:200%;
 }
@@ -119,5 +119,9 @@ text-decoration-line: none;
 	 background-color:#FFF73D;
 	 margin-right:180px;;
 				    
+}
+#error p{
+	color:red;
+	text-align:center;
 }
 

@@ -20,21 +20,28 @@
             <div id="password"><a href="/find/pw"><p>Password</p></a></div>
         </div>
         <div id="contents">
-        <form action="" method="post">
+        <form action="/setpw" method="post">
             <div id="box">
+		    <div id="error">
+		    <% if(flashMessages.error) { %>
+		    <p> <%= flashMessages.error %></p>
+		    <% } %>
+		    </div>
             <div>
-                <label for="newPw">New-Password</label>
-                <input type="pw" id="pw" name="pw">
+                <label for="newPw">Password</label>
+                <input type="password" id="newPw" name="newPw">
             </div>
             
-            <div>:q
+            <div>
                 <label for="rePw">Re-Password</label>
                 <input type="password" id="rePw" name="rePw">
             </div>
        
             </div>
-            <input type="submit" id="submit" name="submit" value="send a code">
-            <div id="return">
+	    <div id="submitDiv">
+            <input type="submit" id="submit" name="submit" value="submit">
+	    </div>
+	    <div id="return">
                 <a href="">Go back to find ID</a>
                 <a href="">Go back to main page</a>
             </div>     

@@ -123,6 +123,7 @@ io.on("connection", (socket) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
 passport.use(new LocalStrategy({
 	usernameField: "email",
 	passwordField:"password",
@@ -130,10 +131,9 @@ passport.use(new LocalStrategy({
 	passReqToCallback: false,
 },async function(email,password, done) {
 	try{
-		let user = await User.findOne({
-			where: {email:email}
-		});
+		let user = await User.findByPk(email);
 		if(user){
+			
 			if(await User.passwordComparison(user, password)) {return done(null,user);
 		}else{
 			//The user information is in DB and entered password is the same from DB
@@ -205,7 +205,9 @@ app.post("/find/id", homeController.findId, homeController.redirectView);
 app.get("/find/pw", (req,res) => {res.render("findPw")});
 app.post("/find/pw", authController.matchCode, authController.findPw, homeController.redirectView);
 app.get("/setpw", authController.setPwView);
-app.get("/resultFind", homeController.resultFind);
+app.post("/setpw", authController.setPw, homeController.redirectView);
+app.get("/resultFind", homeController.resultFindId);
+app.get("/resultFind/pw", homeController.resultFindPw);
 server.listen(port);
 console.log(`The server has started and is listening on the port number: ${port}`);
 

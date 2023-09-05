@@ -78,8 +78,6 @@ module.exports = {
 		}
 	},
 	logInView: (req,res) => {
-		let code = store.get("code");
-		console.log(code);
 		res.render("localLogin");
 	},
 	chatRoom: async(req,res) => {
@@ -148,8 +146,11 @@ module.exports = {
 		res.locals.redirect = "/resultFind";
 		next();
 	},
-	resultFind: (req,res) => {
+	resultFindId: (req,res) => {
 		res.render("resultFindId");
+	},
+	resultFindPw: (req,res) => {
+		res.render("resultFindPw");
 	}
 	
 };

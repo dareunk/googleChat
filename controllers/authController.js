@@ -1,5 +1,7 @@
 const nodeMailer = require("nodemailer");
 const store = require("store");
+const db = require("../models/index"),
+	User = db.user;
 
 var generateRandomString = function(length) {
 	          var text = '';
@@ -106,8 +108,14 @@ module.exports = {
 		console.log("here")
 		let inputCode = req.body.code;
 		let code = req.session.code;
+		let email = req.session.inputEmail;
 		console.log(`findPw: ${inputCode}`);
 		console.log(`findPs: ${code}`);
+		console.log(`email: ${email}`);
+		let user = await User.findByPk(email);
+		console.log(`user:${user}`);
+		if(user){
+
 		if(code==undefined){
 			res.locals.redirect = "/find/pw";
 			next();
@@ -121,11 +129,47 @@ module.exports = {
 				next();
 			}
 		}
+		}
+		else{
+			console.log(`Cannot find the user's information`);
+			req.flash("error", "Sign up first");
+			res.locals.redirect = "/signup";
+			next();
+		}
 	},
 	setPwView: async(req,res,next) => {
 		let authentication = req.session.auth;
 		console.log(`authentication:${authentication}`);
 		if(authentication){ res.render("setPw");}
+	},
+	setPw: async(req,res,next) => { 
+		let authentication = req.session.auth;
+
+		if(authentication){
+
+		let email = req.session.inputEmail;
+		let newPassword = req.body.newPw;
+		let rePassword = req.body.rePw;
+		console.log(email);
+		console.log(newPassword);
+		console.log(rePassword);
+		if(newPassword != rePassword) {
+			console.log(`Two passwords do not match`);
+			req.flash("error", "Two passwords do not match. Check again");
+			res.locals.redirect = "/setpw";
+			next();
+		}else{
+			console.log(`Two password match`);
+			req.flash("success", "Your password is changed successfully");
+			await User.changePassword(email, newPassword);
+		//	console.log(`user:${user}`);
+			let user = await User.findByPk(email); 	
+			console.log(user.displayName);
+			res.locals.displayName = user.displayName;
+			res.render("resultFindPw");
+		}
+		}
+			
 	}
 
 
