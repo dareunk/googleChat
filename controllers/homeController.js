@@ -94,6 +94,32 @@ module.exports = {
 	createChatRoom: async(req,res) => {
 		res.render("createChatRooms");
 	},
+	search: async(req,res) => {
+		let search = req.body.search;
+		console.log(search);
+		//It is simple code, but only printed out when it is exactly match.
+		/*
+		const chatRooms = await ChatRoom.findAll({
+			where: { roomName: search}});
+		res.locals.chatrooms = chatRooms;
+		res.render("chatRooms");
+		*/
+
+		// if it does not exactly match, can be printed out
+		const chatRooms = await ChatRoom.findAll();
+		var count = 0;
+		var chatrooms = [];
+		chatRooms.forEach( (chatRoom) => {
+			if(chatRoom.roomName.indexOf(search) != -1){
+				//console.log(chatRoom);
+				chatrooms[count] = chatRoom;
+				count++;
+			}});
+		console.log(chatrooms);
+		res.locals.chatrooms = chatrooms;
+		res.render("chatRooms");
+		
+	},	
 	create: async(req,res,next)=>{
 		let user = res.locals.currentUser;
 		let code = res.locals.code;

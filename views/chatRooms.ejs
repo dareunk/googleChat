@@ -1,4 +1,4 @@
-CTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -63,6 +63,15 @@ CTYPE html>
                 margin:auto;
                 margin-bottom:20px;
             }
+	    #submit{
+		    width:50px;
+		    height:30px;
+		    border-radius:100px;
+		    border-color:white;
+		    background-color:white;
+		    color: black;
+		    margin-left:-55px;
+	    }
             #chatRooms{
                 width:1000px;
                 height:350px;
@@ -112,9 +121,11 @@ CTYPE html>
             <div id="create">
                 <a href="/create"><p>+</p></a>
             </div>
-            <div id="search">
-                <p>search</p>
-            </div>
+	    <form action ="/search" method="POST">
+		    <label for="search">search</label>
+		    <input type="text" id="search" name="search"> 
+		    <input type="submit" id="submit" value="send">
+	    </form>
             <div id="chatRooms">
 		<% chatrooms.forEach(chatroom => {%>
 		<a href= "<%= `/chat/${chatroom.id}` %>">
@@ -122,7 +133,6 @@ CTYPE html>
 		    <div id="title"><p><%=chatroom.roomName%></p></div>
                     <div id="description"><p><%=chatroom.description%></p></div>
 		</a>
-		</form>
 		<% }); %>
 	    </div>                
        </div>

@@ -200,6 +200,7 @@ app.get("/create", homeController.createChatRoom);
 app.post("/create", homeController.create, homeController.redirectView);
 app.get("/chatrooms", homeController.chatRoom);
 app.get("/chat/:id", homeController.chat);
+app.post("/search", homeController.search);
 app.get("/find/id", (req,res) => {res.render("findId")});
 app.post("/find/id", homeController.findId, homeController.redirectView);
 app.get("/find/pw", (req,res) => {res.render("findPw")});
