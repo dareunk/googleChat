@@ -1,0 +1,17 @@
+<% if(authentication) { %> 
+<div id="top">
+        <a href="/logout" id="logout">
+        <p> | &nbsp logout</p>
+        </a>
+        <a href="" id="name">
+        <p><%= currentUser.displayName %></p>
+        </a>
+</div>
+<% } else { %>
+	<div id="top">
+	<a href="/login" id="login">
+	<p>login</p>
+	</a>
+	</div>
+<% } %>
+

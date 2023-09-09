@@ -1,0 +1,21 @@
+
+body{
+	    background-color:#0D1137;
+    }
+#top{
+	    text-align:right;
+	    width:100%;
+	    display:inline-block;
+ }
+ #name, #logout{
+	        color:white;
+		    float:right;
+		        margin-right:20px;
+			    font-size:120%;
+ }
+ 
+ a{
+			        text-decoration-line: none;
+
+}
+

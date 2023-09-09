@@ -195,7 +195,7 @@ app.get("/login/google/callback", passport.authenticate("google", {
 			successRedirect: "/chatrooms",
 			failureFlash:true
 }));
-
+app.get("/logout", homeController.logout, homeController.redirectView);
 app.get("/create", homeController.createChatRoom);
 app.post("/create", homeController.create, homeController.redirectView);
 app.get("/chatrooms", homeController.chatRoom);

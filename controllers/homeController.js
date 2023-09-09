@@ -80,9 +80,15 @@ module.exports = {
 	logInView: (req,res) => {
 		res.render("localLogin");
 	},
+	logout: async(req,res,next) => {
+		req.session.destroy();
+		res.locals.redirect = "/";
+		next();
+	},
 	chatRoom: async(req,res) => {
 		console.log(req.user);
 		console.log(req.isAuthenticated());
+		res.locals.authentication = req.isAuthenticated();
 		if(req.isAuthenticated()){
 			const chatRooms = await ChatRoom.findAll();
 			res.locals.chatrooms = chatRooms;
@@ -144,6 +150,7 @@ module.exports = {
 	chat: async(req,res) => {
 		let chatRoomId = req.params.id;
 		console.log(`${chatRoomId}`);
+		res.locals.authentication = req.isAuthenticated(); 
 		let previousChat = await Chat.findAll({where: {chatRoomNum : chatRoomId}});
 		console.log(previousChat);
 		res.locals.chatcontents = previousChat;
