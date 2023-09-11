@@ -25,6 +25,7 @@
                 height:500px;
                 background-color:white;
                 border-radius:30px;
+		padding-top:10px;
                 overflow-y:overlay;
                 scroll-margin-left:100px;
             }
@@ -51,14 +52,53 @@
            
         
             }
-            #chatBox{
-                background-color:#D8D8D8;
-                width:400px;
+            #chatBox {
+             
+                width:auto;
+		max-width:300px;
                 height:auto;
-                border-radius:30px;
-                margin:10px auto;
+                border-radius:20px;
                 display: relative;
+		position: relative;
             }
+	    .myself{
+		    background-color:#FFF73D;
+		    margin-left:140px;
+		    margin-top:10px;
+
+	    }
+	    .other{
+		    background-color:#D8D8D8;
+		    margin-left:40px;
+		    margin-top:0px;
+            }
+	    .myself:after{
+		    content:"";
+		    position:absolute;
+		    top:5%;  
+		    border-left:20px solid #FFF73D;
+		    border-top:10px solid transparent;
+		    border-bottom:10px solid transparent;
+		    right:-13px;
+	    }
+	    .other:after{
+		    content:"";
+		    position:absolute;
+		    top:5%;
+		    border-right:20px solid #D8D8D8;
+		    border-top:10px solid transparent;
+		    border-bottom: 10px solid transparent;
+		    left:-13px;
+	    }
+			        
+	    #chatContents{
+	    	display:absolute;
+		width:290px;
+		padding-top:5px;
+		padding-bottom:5px;
+		padding-left:10px;
+	
+	    }
             #chatBox p{
                 display:absolute;
                 margin-top:10px;
@@ -97,9 +137,29 @@
                 border:none;
                 background-color:#FFF73D;
                 border-radius:30px;
-                
+               
             }
+	    #who{ 
+		   margin-bottom:0px;
+		   margin-left:40px;
+		   padding:0px;
+		   color: #635C5C;
+		   margin-top:5px;
+	    }
+	    
         </style>
+	
+	<script>
+		/*
+		var changeColor = function () {
+		let current = $("#userEmail").val();
+		let who = $("#userFromDB").val();
+		if(current == who){
+			$("#chatBox").attr("class", "myself");
+		}
+		}
+		*/
+	</script>
     </head>
     <body>
         <div id="container">
@@ -110,7 +170,26 @@
 	    <div id="chat">
 		    <% if(chatcontents) {%>
 		   <% chatcontents.forEach(chatcontent => { %>
-		    <div id="chatBox"><%= chatcontent.content %></div>
+
+		   <% if(chatcontent.userEmail ===  currentUser.email ) {%> 
+		   <div id="chatBox" class= "myself">
+			   <div id ="chatContents">
+				  <%= chatcontent.content %>
+			   </div>
+		   </div>
+		   <% } else { %>
+	   	    <div>   
+		   <div id="who">
+			           <p id = "userFromDB" value="<%= chatcontent.userEmail%>" ><%= chatcontent.userEmail %></p>
+
+		       </div>
+		   <div id="chatBox" class="other">
+			   <div id="chatContents">
+				   <%= chatcontent.content %>
+			   </div>
+		   </div>
+		   </div>
+		   <% } %>
 		    <% })}; %>
 	    </div>
                 <div id="chatForm">
@@ -137,14 +216,20 @@
 			$("#sendChat").click(()=>{
 				let content = $("#inputChat").val();
 				let roomId = $("#roomId").val();
+				//$("#chatBox").addClass("myself")
+				$("#chat").prepend(`<div id="chatBox"><div id="chatContents">${content}</div></div>`);
+				$("#chatBox").addClass("myself");
+				$("#inputChat").val("");
 				socket.emit("message", content, roomId);
 				return false;
 			});
-			socket.on("update", (msg,userName) => {
-				let result = msg + "            @" + userName;
-				$("#chat").prepend(`<div id="chatBox">${result}</div>`);
+			socket.on("update", (msg,userEmail) => {
 				
+				$("#chat").prepend(`<div id="chatBox"><div id="chatContents">${msg}</div></div>`);
+				$("#chatBox").addClass("other");	
+				$("#chat").prepend(`<div id="who">${userEmail}</div>`);
 			});
+			
 		});
 	</script>
 

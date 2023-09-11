@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
 			chatRoomNum: id
 		};
 		await Chat.create(chatAttributes);
-		io.emit("update",content, socket.name);
+		socket.broadcast.emit("update",content, socket.email);
 	});
 		
 });
