@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible"  content="IE=edge">
+        <meta name="viewport" content="with=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet">
+        <style>
+            body{
+                background-color: #0D1137;
+            } 
+            #container{
+                width:100%;
+                height:100%;
+                margin-top:15%;
+                text-align: center;
+                
+            }
+             #profileDiv{
+                width:300px;
+                height:300px;
+                border-radius: 50%;
+                background-color:white;
+                cursor:pointer;
+                margin:auto;
+                text-align: center;
+                color:gray;
+                position:relative;
+                
+            
+            }
+            #profile{
+                top:120px;
+                left:40%;
+                position:absolute;
+                color:gray;
+            }
+                #profileInput{
+                
+                width:300px;
+                height:300px;
+                border-radius: 50%;
+                left:0px;
+                position: absolute;
+                object-fit: cover;
+                opacity: 0;
+            }
+            #submit{
+                width:200px;
+                height:50px;
+                border-radius:100px;
+                background-color: #FFF73D;
+                margin:auto;
+                margin-top:30px;
+            }
+        </style>
+        <body>
+            <div id ="container">
+            	<form action="/uploadProfile" method="POST" enctype="multipart/form-data">
+		<div id="profileDiv">
+                <label for="profile" id="profile">
+                   <p> Upload  </p> 
+                </label>
+                <input type="file" name="profile" id="profileInput" ></input>
+                </div>
+                <div id="submitDiv">
+                    <input type="submit" name="submit" id="submit" value="save">
+                </div>
+		</form>
+             </div>
+    
+        </body>
+        </html>
+

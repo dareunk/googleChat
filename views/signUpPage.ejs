@@ -21,25 +21,15 @@
                 width:300px;
                 height:300px;
                 border-radius: 50%;
-                background-color:#0D1137;
+                background-color:white;
                 cursor:pointer;
                 margin-left:20%;
                 text-align: center;
                 color:gray;
                 position:relative;
                 float:left;
-		
             
             }
-	    img{
-		    width:300px;
-		    height:300px;
-		    margin-left:20%;
-		    position:absolute;
-		    border-radius:50%;
-		    object-fit : cover;
-		    left:0px;
-	    }
             #profile{
                 top:120px;
                 left:40%;
@@ -127,18 +117,14 @@
 		    <% }} %>
 
 	    </div>
-	   <!--
+	    <form method ="POST">
 	    <div id="profileDiv">
 	    <label for="profile" id="profile">
 		    <p> upload profile</p>
 	    </label>
 	    <input type="file" name="profile" id="profile"></input>
 	    </div>
-	    -->
-	    <div id="profileDiv">
-		    <img src="<%= profilepath %>" alt ="no search image">
-	    </div>
-		<form method="POST">
+
 			<div id="inputemailDiv">
 			<label for="inputemail">Email</label>
 			<input type="email" name="inputemail" id="inputemail">

@@ -24,6 +24,29 @@ const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const clientID = process.env.GOOGLE_CLIENT_ID,
 	clientSecret = process.env.GOOGLE_CLIENT_SECRET,
 	clientRedirectUrl = process.env.GOOGLE_REDIRECT_URL;
+
+const multer = require("multer");
+const path = require("path");
+const Buffer = require("buffer/").Buffer;
+//const upload = multer ({storage: storage});
+const storage = multer.diskStorage({
+	destination : async(req,file,cb)=> {
+		
+		cb(null, "uploadImg/");
+	},
+	filename : async(req,file,cb) => {
+		//const ext = path.extname(file.originalname);
+		//const storedFileName = path.basename(file.originalname,ext);
+		//cb(null, storedFileName);
+	//	const storedFileName = file.originalname.toString("utf8");
+	//	cb(null, storedFileName);
+
+		const storedFileName = Buffer.from(file.originalname,"latin1").toString("utf8");
+		cb(null,storedFileName);
+//		cb(null,file.originalname);
+	}
+});
+const upload = multer({storage: storage});
 //const memoryStore = require("memoryStore")(session);
 /*
 const nodeMailer = require("nodemailer");
@@ -171,9 +194,19 @@ app.use(async(req,res,next) => {
 	next();
 });
 
-
-
+app.use("/signup", express.static("uploadImg"));
 app.get("/", (req,res) => { res.render("index")});
+app.get("/uploadProfile", (req,res) => {res.render("profile")});
+app.post("/uploadProfile", upload.single("profile"), (req,res,next) => {
+	
+	res.locals.authentication = false;
+	console.log(req.file);
+	//req.session.profilepath = `${req.file.path}`;
+	req.session.profilepath = req.file.originalname;
+	console.log(req.session.profilepath);
+	res.redirect("/signup");
+
+});
 app.get("/signup", homeController.signUpView);
 app.post("/signup", 
 	[ //sanitizeBody("email").normalizeEmail({all_lowercase:true}).trim(),

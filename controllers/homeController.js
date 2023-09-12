@@ -30,6 +30,7 @@ module.exports = {
 	},
 	signUpView: (req,res) => {
 		res.locals.authentication = false;
+		res.locals.profilepath = req.session.profilepath;
 		res.render("signUp");
 	},
 
@@ -38,8 +39,10 @@ module.exports = {
 		let code = req.session.code;
 		let validEmail = req.session.inputEmail;
 		let checkAuthentication = req.session.auth;
+		let profilePath = req.session.filepath;
 		console.log(code);
 		console.log(checkAuthentication);
+		console.log(profilePath);
 		console.log(`validEmail:${validEmail}`);
 		if(checkAuthentication){
 		let userParams = await getUserParams(req.body, validEmail);
