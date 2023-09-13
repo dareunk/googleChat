@@ -41,9 +41,15 @@ const storage = multer.diskStorage({
 	//	const storedFileName = file.originalname.toString("utf8");
 	//	cb(null, storedFileName);
 
-		const storedFileName = Buffer.from(file.originalname,"latin1").toString("utf8");
-		cb(null,storedFileName);
+		//const storedFileName = Buffer.from(file.originalname,"latin1").toString("utf8");
+	//	cb(null,storedFileName);
 //		cb(null,file.originalname);
+		//const ext = path.extname(file.originalname);
+		//const storedFileName = path.basename(file.originalname,ext)
+		const randomString = generateRandomString(5);
+		file.originalname = randomString;
+		const storedFileName = file.originalname + '_' + Date.now();
+		cb(null,storedFileName);
 	}
 });
 const upload = multer({storage: storage});
@@ -193,16 +199,29 @@ app.use(async(req,res,next) => {
 	res.locals.flashMessages = req.flash();
 	next();
 });
+//encrypt fileName
+var generateRandomString = function(length) {
+	                  var text = '';
+	                  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvmxyz123456789';
 
+	                  for (var i = 0; i < length; i++) {
+				                                                  text += possible.charAt(Math.floor(Math.random() * possible.length));
+				                                                }
+	                  return text;
+};
 app.use("/signup", express.static("uploadImg"));
 app.get("/", (req,res) => { res.render("index")});
 app.get("/uploadProfile", (req,res) => {res.render("profile")});
 app.post("/uploadProfile", upload.single("profile"), (req,res,next) => {
 	
 	res.locals.authentication = false;
+	//encrypt fileName
+	
+	//req.file.originalname = generateRandomString(5);
+
 	console.log(req.file);
 	//req.session.profilepath = `${req.file.path}`;
-	req.session.profilepath = req.file.originalname;
+	req.session.profilepath = req.file.filename;
 	console.log(req.session.profilepath);
 	res.redirect("/signup");
 
